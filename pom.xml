@@ -11,6 +11,7 @@
 
     <modules>
         <module>logger-core</module>
+        <module>logger-thrift</module>
         <module>example</module>
     </modules>
 

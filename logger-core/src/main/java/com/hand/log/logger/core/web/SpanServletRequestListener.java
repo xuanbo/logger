@@ -1,6 +1,8 @@
 package com.hand.log.logger.core.web;
 
 import com.hand.log.logger.core.Span;
+import com.hand.log.logger.core.SpanSerializable;
+import com.hand.log.logger.core.SpanSerialization;
 import com.hand.log.logger.core.SpanThreadContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,8 @@ public class SpanServletRequestListener implements ServletRequestListener {
 
     public static final String SPAN_HEADER = "Log-Span";
 
+    private static final SpanSerializable SERIALIZABLE = new SpanSerialization();
+
     private final SpanEvent spanEvent;
 
     public SpanServletRequestListener(SpanEvent spanEvent) {
@@ -38,15 +42,14 @@ public class SpanServletRequestListener implements ServletRequestListener {
             SpanThreadContextHolder.setup(span);
             LOG.debug("No span header found, create a new span");
         } else {
-            String[] pair = StringUtils.split(value, ":");
-            if (pair.length == 2) {
+            Span span = SERIALIZABLE.deserialize(value);
+            if (span != null) {
                 // 请求头中获取到span信息，则直接使用span
-                SpanThreadContextHolder.setup(Span.create(pair[0], pair[1]));
+                SpanThreadContextHolder.setup(span);
                 LOG.debug("Found span header: {}, use exist span", value);
             } else {
                 // 请求头中获取到span信息不合法，则通过spanEvent创建
-                Span span = spanEvent.onCreate(request);
-                SpanThreadContextHolder.setup(span);
+                SpanThreadContextHolder.setup(spanEvent.onCreate(request));
                 LOG.warn("Invalid span header: {}, create a new span", value);
             }
         }

@@ -20,8 +20,16 @@
 
 ## 不足
 
-* 暂时只支持了restTemplate请求传递span，spring cloud还未做集成（有空继续完善）。
 * logback不支持异步打印日志
+
+## span支持
+
+暂时只支持restTemplate、feign传递span。
+
+* `logger-core`: restTemplate拦截器
+* `logger-thrift/logger-thrift-feign`: feign拦截器
+
+当然，原理就是在拦截器中添加span header头信息，简单扩展下就能支持zuul、spring gateway。
 
 ## 说明
 

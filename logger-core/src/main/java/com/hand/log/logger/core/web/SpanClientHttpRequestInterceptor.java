@@ -1,6 +1,8 @@
 package com.hand.log.logger.core.web;
 
 import com.hand.log.logger.core.Span;
+import com.hand.log.logger.core.SpanSerializable;
+import com.hand.log.logger.core.SpanSerialization;
 import com.hand.log.logger.core.SpanThreadContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -18,6 +20,8 @@ import java.io.IOException;
  */
 public class SpanClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
+    private static final SpanSerializable SERIALIZABLE = new SpanSerialization();
+
     @Override
     public ClientHttpResponse intercept(HttpRequest request,
                                         byte[] body,
@@ -31,7 +35,7 @@ public class SpanClientHttpRequestInterceptor implements ClientHttpRequestInterc
 
     private String serializeSpan() {
         Span span = SpanThreadContextHolder.get();
-        return span.getId() + ":" + span.getUserId();
+        return SERIALIZABLE.serialize(span);
     }
 
 }
