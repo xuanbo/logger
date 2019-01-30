@@ -18,15 +18,11 @@
 
 [example](./example)
 
-## 不足
-
-* logback不支持异步打印日志
-
 ## span支持
 
 暂时只支持restTemplate、feign传递span。
 
-* `logger-core`: restTemplate拦截器
+* `logger-core`: restTemplate拦截器，logback异步打印日志支持
 * `logger-thrift/logger-thrift-feign`: feign拦截器
 
 当然，原理就是在拦截器中添加span header头信息，简单扩展下就能支持zuul、spring gateway。
