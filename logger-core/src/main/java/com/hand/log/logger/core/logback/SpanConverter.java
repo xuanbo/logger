@@ -9,7 +9,7 @@ import com.hand.log.logger.core.SpanThreadContextHolder;
 
 /**
  * span converter
- * 先从上下文中获取，获取不到再从MDC中获取
+ * 先从上下文中获取，获取不到则可能是异步打印日志，则判断event是否为LoggingEventWrapper，如果是则从中获取span信息
  *
  * @author 奔波儿灞
  * @since 1.0

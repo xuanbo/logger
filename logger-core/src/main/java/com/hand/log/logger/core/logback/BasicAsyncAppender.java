@@ -8,7 +8,7 @@ import com.hand.log.logger.core.SpanSerialization;
 import com.hand.log.logger.core.SpanThreadContextHolder;
 
 /**
- * 异步打印日志时传递span上下文到event，并设置原始线程名称
+ * 异步打印日志时传递span到event，并设置原始线程名称
  *
  * @author 奔波儿灞
  * @since 1.0

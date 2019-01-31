@@ -109,7 +109,7 @@ public class LoggingEventWrapper implements ILoggingEvent {
     }
 
     /**
-     * 获取内部propertyMap，便于设置参数
+     * 获取内部propertyMap，便于设置参数到event
      *
      * @return 参数
      */
@@ -121,7 +121,7 @@ public class LoggingEventWrapper implements ILoggingEvent {
     }
 
     /**
-     * 设置线程名称，否则异常打印日志无法获取原始线程名称
+     * 设置线程名称，否则异步打印日志无法获取原始线程名称
      *
      * @param threadName 线程名称
      */
