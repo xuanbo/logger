@@ -21,22 +21,17 @@ public class BasicAsyncAppender extends AsyncAppender {
 
     @Override
     protected void append(ILoggingEvent event) {
-        super.append(new LoggingEventWrapper(event));
-    }
-
-    @Override
-    protected void preprocess(ILoggingEvent event) {
         Span span = SpanThreadContextHolder.get();
-        if (span != null) {
-            if (event instanceof LoggingEventWrapper) {
-                LoggingEventWrapper eventWrapper = (LoggingEventWrapper) event;
-                // 设置原始线程名称
-                eventWrapper.setThreadName(Thread.currentThread().getName());
-                // 传递span
-                eventWrapper.getPropertyMap().put(KEY, SERIALIZABLE.serialize(span));
-            } else {
-                throw new UnsupportedOperationException();
-            }
+        if (span == null) {
+            super.append(event);
+        } else {
+            System.out.println(event.getThreadName());
+            LoggingEventWrapper eventWrapper = new LoggingEventWrapper(event);
+            // 设置原始线程名称
+            eventWrapper.setThreadName(Thread.currentThread().getName());
+            // 传递span
+            eventWrapper.getPropertyMap().put(KEY, SERIALIZABLE.serialize(span));
+            super.append(eventWrapper);
         }
     }
 
